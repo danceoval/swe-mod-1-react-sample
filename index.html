@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+    <title>Saucey Site</title>
+     <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+    <div id='app'>
+    </div>
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+<script crossorigin type="text/babel">
+
+class App extends React.Component {
+    constructor() {
+        super()
+        this.state = {
+            sauces : ["Franks", "Sriracha", "Tobasco"]
+        }
+    }
+
+    render() {
+        return (
+            <div>   
+                <h1>A Somewhat Saucey Site</h1>
+                <div className="clearfix">
+                    <div className="block">
+                        <ItemContainer items={this.state.sauces}/>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+
+} 
+
+class ItemContainer extends React.Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            selectedItem : ''
+        }
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(event) {
+        this.setState({
+            selectedItem : event.target.value
+        })
+    }
+
+
+    render() {
+        return(
+            <div className="item-container">
+                {
+                    this.state.selectedItem ?   <ItemPic item={this.state.selectedItem}/> : <h2>Select a Product</h2>
+                }
+                
+                <div >
+                    <label>
+                        Select a Product:
+                        <select onChange={this.handleChange}>
+                            <option value=""></option>
+                            {
+                                this.props.items.map((item, idx) => {
+                                    return <option value={item} key={idx}>{item}</option>
+                                })
+                            }
+                        </select>
+                    </label>
+                </div>
+            </div>
+        )
+    }
+}
+
+
+
+function ItemPic({item}){
+    return (<div className="item-img" style={{backgroundImage : `url(./public/${item}.gif)`}}></div>)
+}
+
+
+
+ReactDOM.render(
+    <App />,
+    document.getElementById('app')
+)
+</script>
+</body>
+</html>
